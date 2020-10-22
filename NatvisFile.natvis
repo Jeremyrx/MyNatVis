@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+  <Type Name="CArray&lt;*&gt;">
+    <DisplayString>{{size = {m_nSize}}}</DisplayString>
+    <Expand>
+      <Item Name="[size]">m_nSize</Item>
+      <Item Name="[capacity]">(m_nMaxSize)</Item>
+      <ArrayItems>
+        <Size>m_nSize</Size>
+        <ValuePointer>m_pData</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+
+
+  <Type Name='CMap&lt;*,*,*,*&gt;'>
+    <AlternativeType Name="CMapStringToString"/>
+    <AlternativeType Name="CMapStringToPtr"/>
+    <DisplayString>{{size = {m_nCount} }}</DisplayString>
+    <Expand>
+      <CustomListItems>
+        <Variable Name='pHashtable' InitialValue='m_pHashTable'/>
+        <Variable Name='hashtable_index' InitialValue='0'/>
+        <Variable Name='pList' InitialValue='*m_pHashTable'/>
+        <Variable Name='i' InitialValue='0'/>
+        <Loop Condition='hashtable_index &lt; m_nHashTableSize'>
+          <Exec>pList = pHashtable[hashtable_index]</Exec>
+          <Loop Condition='pList '>
+            <Item Name='{i}: [{pList->key}]'>pList->value</Item>
+            <Exec>pList = pList->pNext</Exec>
+            <Exec>++i</Exec>
+          </Loop>
+          <Exec>++hashtable_index</Exec>
+        </Loop>
+      </CustomListItems>
+    </Expand>
+  </Type>
+
+<Type Name="CTime">
+  <DisplayString Condition="jd == 0">Invalid</DisplayString>
+  <DisplayString>{ 100 * ( ( 4 * ( jd + 68569) / 146097 )  - 49 ) + ( ( 4000 * ( ( jd + 68569 - ( 146097 * ( 4 * ( jd + 68569) / 146097 ) + 3 ) / 4 ) + 1 ) ) / 1461001 ) + ( ( ( 80 * ( ( jd + 68569 - ( 146097 * ( 4 * ( jd + 68569) / 146097 ) + 3 ) / 4 ) - ( 1461 * ( ( 4000 * ( ( jd + 68569 - ( 146097 * ( 4 * ( jd + 68569) / 146097 ) + 3 ) / 4 ) + 1 ) ) / 1461001 )  ) / 4 + 31 )  / 2447 ) / 11 )) }-{ ( ( 80 * ( ( jd + 68569 - ( 146097 * ( 4 * ( jd + 68569) / 146097 ) + 3 ) / 4 ) - ( 1461 * ( ( 4000 * ( ( jd + 68569 - ( 146097 * ( 4 * ( jd + 68569) / 146097 ) + 3 ) / 4 ) + 1 ) ) / 1461001 )  ) / 4 + 31 )  / 2447 )  + 2 - ( 12 * (  ( ( 80 * ( ( jd + 68569 - ( 146097 * ( 4 * ( jd + 68569) / 146097 ) + 3 ) / 4 ) - ( 1461 * ( ( 4000 * ( ( jd + 68569 - ( 146097 * ( 4 * ( jd + 68569) / 146097 ) + 3 ) / 4 ) + 1 ) ) / 1461001 )  ) / 4 + 31 )  / 2447 ) / 11 ) ) ) ) }-{ ( ( jd + 68569 - ( 146097 * ( 4 * ( jd + 68569) / 146097 ) + 3 ) / 4 ) - ( 1461 * ( ( 4000 * ( ( jd + 68569 - ( 146097 * ( 4 * ( jd + 68569) / 146097 ) + 3 ) / 4 ) + 1 ) ) / 1461001 )  ) / 4 + 31 ) - ( 2447 * ( ( 80 * ( ( jd + 68569 - ( 146097 * ( 4 * ( jd + 68569) / 146097 ) + 3 ) / 4 ) - ( 1461 * ( ( 4000 * ( ( jd + 68569 - ( 146097 * ( 4 * ( jd + 68569) / 146097 ) + 3 ) / 4 ) + 1 ) ) / 1461001 )  ) / 4 + 31 )  / 2447 ) ) / 80 ) }</DisplayString>
+  <Expand>
+    <CustomListItems MaxItemsPerView="5000" ExcludeView="Test">
+      <Variable Name="jd" InitialValue="-1" />
+      <Exec>jd = ( m_time / 86400 ) + 2440587.5 </Exec>
+      <Item Name="[julianDay]">jd, d</Item>
+      <Item Name="[Day]">( ( jd + 68569 - ( 146097 * ( 4 * ( jd + 68569) / 146097 ) + 3 ) / 4 ) - ( 1461 * ( ( 4000 * ( ( jd + 68569 - ( 146097 * ( 4 * ( jd + 68569) / 146097 ) + 3 ) / 4 ) + 1 ) ) / 1461001 )  ) / 4 + 31 ) - ( 2447 * ( ( 80 * ( ( jd + 68569 - ( 146097 * ( 4 * ( jd + 68569) / 146097 ) + 3 ) / 4 ) - ( 1461 * ( ( 4000 * ( ( jd + 68569 - ( 146097 * ( 4 * ( jd + 68569) / 146097 ) + 3 ) / 4 ) + 1 ) ) / 1461001 )  ) / 4 + 31 )  / 2447 ) ) / 80 )</Item>
+      <Item Name="[Month]">( ( 80 * ( ( jd + 68569 - ( 146097 * ( 4 * ( jd + 68569) / 146097 ) + 3 ) / 4 ) - ( 1461 * ( ( 4000 * ( ( jd + 68569 - ( 146097 * ( 4 * ( jd + 68569) / 146097 ) + 3 ) / 4 ) + 1 ) ) / 1461001 )  ) / 4 + 31 )  / 2447 )  + 2 - ( 12 * (  ( ( 80 * ( ( jd + 68569 - ( 146097 * ( 4 * ( jd + 68569) / 146097 ) + 3 ) / 4 ) - ( 1461 * ( ( 4000 * ( ( jd + 68569 - ( 146097 * ( 4 * ( jd + 68569) / 146097 ) + 3 ) / 4 ) + 1 ) ) / 1461001 )  ) / 4 + 31 )  / 2447 ) / 11 ) ) ) )</Item>
+      <Item Name="[Year]">100 * ( ( 4 * ( jd + 68569) / 146097 )  - 49 ) + ( ( 4000 * ( ( jd + 68569 - ( 146097 * ( 4 * ( jd + 68569) / 146097 ) + 3 ) / 4 ) + 1 ) ) / 1461001 ) + ( ( ( 80 * ( ( jd + 68569 - ( 146097 * ( 4 * ( jd + 68569) / 146097 ) + 3 ) / 4 ) - ( 1461 * ( ( 4000 * ( ( jd + 68569 - ( 146097 * ( 4 * ( jd + 68569) / 146097 ) + 3 ) / 4 ) + 1 ) ) / 1461001 )  ) / 4 + 31 )  / 2447 ) / 11 ))</Item>
+    </CustomListItems>
+  </Expand>
+  
+</Type></AutoVisualizer>
+
